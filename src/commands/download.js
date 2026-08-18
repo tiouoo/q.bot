@@ -1,4 +1,5 @@
 import { config } from '../config.js';
+import { formatDate } from '../time.js';
 import { getRelease, normalizeSource, normalizeChannel } from '../services/releases.js';
 
 const CHANNEL_LABEL = { release: '正式版', nightly: 'nightly', commit: 'commit' };
@@ -147,13 +148,4 @@ function formatMacOS(assets) {
 function formatSize(bytes) {
   if (!bytes || bytes <= 0) return '未知';
   return `${(bytes / 1048576).toFixed(1)} MiB`;
-}
-
-function formatDate(iso) {
-  if (!iso) return '未知';
-  const d = new Date(iso);
-  if (Number.isNaN(d.getTime())) return '未知';
-  const p = (n) => String(n).padStart(2, '0');
-  const b = new Date(d.getTime() + 8 * 3600 * 1000);
-  return `${b.getUTCFullYear()}-${p(b.getUTCMonth() + 1)}-${p(b.getUTCDate())} ${p(b.getUTCHours())}:${p(b.getUTCMinutes())}:${p(b.getUTCSeconds())}`;
 }

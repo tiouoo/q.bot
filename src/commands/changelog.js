@@ -1,4 +1,5 @@
 import { getRelease, listReleases, normalizeSource, normalizeChannel } from '../services/releases.js';
+import { formatDate } from '../time.js';
 
 const CHANNEL_LABEL = { release: '正式版', nightly: 'nightly', commit: 'commit' };
 const SOURCE_LABEL = { cnb: 'cnb', gh: 'github' };
@@ -73,6 +74,7 @@ function buildSingle(release, limit) {
     `# [${release.title}](${release.url})`,
     '',
     `**通道**：${SOURCE_LABEL[release.source]} ${CHANNEL_LABEL[release.channel]}`,
+    `**时间**：${formatDate(release.publishedAt, true)}`,
     '',
   ];
   const bodyLines = cleanBody(release.body).split('\n').map((s) => s.trim()).filter(Boolean);
