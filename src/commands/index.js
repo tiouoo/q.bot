@@ -18,6 +18,12 @@ export function buildContext(bot, msg, args) {
   };
 }
 
+export function findCommand(text) {
+  const parts = (text || '').split(/\s+/).filter(Boolean);
+  const name = (parts[0] || '').toLowerCase();
+  return commands.find((cmd) => cmd.names.includes(name)) || null;
+}
+
 export async function dispatch(bot, msg, text) {
   const parts = (text || '').split(/\s+/).filter(Boolean);
   const name = (parts[0] || '').toLowerCase();

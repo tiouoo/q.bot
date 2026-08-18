@@ -1,4 +1,4 @@
-import { dispatch, showHelp } from './commands/index.js';
+import { dispatch, showHelp, findCommand } from './commands/index.js';
 import { stripPrefix } from './prefix.js';
 import { isAdminSender } from './admin.js';
 
@@ -60,8 +60,8 @@ export function createHandler(bot) {
         }
         // 未 @ 机器人：带前缀或有指令才响应
         if (hasPrefix && text) return dispatch(bot, msg, text);
-        // 管理员无需 @ / 前缀即可触发指令
-        if (isAdminSender(msg) && text) return dispatch(bot, msg, text);
+        // 管理员无需 @ / 前缀即可触发指令，但仅限命中已知指令，普通聊天保持沉默
+        if (isAdminSender(msg) && findCommand(text)) return dispatch(bot, msg, text);
         // 既没 @ 也没触发指令：保持沉默
         return;
       }
