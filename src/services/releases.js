@@ -82,21 +82,6 @@ export async function listReleases(source) {
   return (list || []).map((r) => toRelease(r, src, 'release'));
 }
 
-export async function compareTags(base, head) {
-  const url = `https://api.github.com/repos/${GH_REPO}/compare/${encodeURIComponent(base)}...${encodeURIComponent(head)}`;
-  const data = await ghGet(url);
-  const commits = (data.commits || []).map((c) => ({
-    sha: String(c.sha || '').slice(0, 7),
-    message: String((c.commit && c.commit.message) || '').split('\n')[0].trim(),
-    date: (c.commit && c.commit.author && c.commit.author.date) || null,
-  }));
-  return {
-    url: String(data.html_url || ''),
-    total: Number(data.total_commits || commits.length),
-    commits,
-  };
-}
-
 function latestStable(releases) {
   const list = (releases || [])
     .filter((r) => r && r.draft !== true && r.prerelease !== true)
