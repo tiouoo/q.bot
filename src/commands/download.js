@@ -84,11 +84,11 @@ function parseArgs(args) {
 
 function formatCard({ release, assets }) {
   const lines = [
-    `# [${release.title}](${release.url}) `,
-    ' ',
+    `# [${release.title}](${release.url.replace("https://cnb.cool/tiouo/portal/-/tags/", "https://cnb.cool/tiouo/portal/-/tag/")}) `,
+    " ",
     `下载通道：${SOURCE_LABEL[release.source]} ${CHANNEL_LABEL[release.channel]}`,
     `发布时间：${formatDate(release.publishedAt)}     \n`,
-    '---',
+    "---",
   ];
   if (!assets.length) {
     lines.push('该通道暂无可用下载资源');

@@ -45,11 +45,11 @@ function parseArgs(args) {
 
 function buildSingle(release, limit) {
   const lines = [
-    `# [${release.title}](${release.url})`,
-    '',
+    `# [${release.title}](${release.url.replace("https://cnb.cool/tiouo/portal/-/tags/", "https://cnb.cool/tiouo/portal/-/tag/")})`,
+    "",
     `**通道**：${SOURCE_LABEL[release.source]} ${CHANNEL_LABEL[release.channel]}`,
     `**时间**：${formatDate(release.publishedAt, true)}`,
-    '',
+    "",
   ];
   const bodyLines = cleanBody(release.body).split('\n').map((s) => s.trim()).filter(Boolean);
   // 去掉与标题重复的首行
