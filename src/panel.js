@@ -1,8 +1,8 @@
 const C2C_ITEMS = [
-  { type: 'command', name: '下载', desc: '获取下载链接' },
-  { type: 'command', name: '更新日志', desc: '获取更新日志' },
-  { type: 'command', name: '帮助', desc: '显示帮助列表' },
-  { type: 'command', name: 'ping', desc: '连接状态/运行时间' },
+  { type: "command", name: "get", desc: "获取下载链接" },
+  { type: "command", name: "log", desc: "获取更新日志" },
+  { type: "command", name: "help", desc: "显示帮助列表" },
+  { type: "command", name: "ping", desc: "连接状态/运行时间" },
 ];
 
 const GROUP_ITEMS = [
