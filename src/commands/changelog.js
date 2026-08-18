@@ -75,10 +75,23 @@ function buildSingle(release, limit) {
     `**通道**：${SOURCE_LABEL[release.source]} ${CHANNEL_LABEL[release.channel]}`,
     '',
   ];
-  const bodyLines = cleanBody(release.body).split('\n').filter(Boolean);
-  const max = limit || 60;
-  lines.push(...bodyLines.slice(0, max));
-  if (bodyLines.length > max) lines.push(`… 还有 ${bodyLines.length - max} 行未显示`);
+  const bodyLines = cleanBody(release.body).split('\n').map((s) => s.trim()).filter(Boolean);
+  const itemIdx = bodyLines.findIndex((l) => /^[-*+]\s/.test(l));
+
+  // 无变更条目：limit 按行数计
+  if (itemIdx < 0) {
+    const shown = (limit || 60) < bodyLines.length ? bodyLines.slice(0, limit || 60) : bodyLines;
+    lines.push(...shown);
+    if (bodyLines.length > shown.length) lines.push(`… 还有 ${bodyLines.length - shown.length} 行未显示`);
+    return lines.join('\n');
+  }
+
+  // 有变更条目：limit 只按条目数计，说明行始终完整展示
+  const prefix = bodyLines.slice(0, itemIdx);
+  const items = bodyLines.slice(itemIdx);
+  const shown = items.slice(0, limit || 60);
+  lines.push(...prefix, ...shown);
+  if (items.length > shown.length) lines.push(`… 还有 ${items.length - shown.length} 条未显示`);
   return lines.join('\n');
 }
 
