@@ -5,11 +5,24 @@ function escapeRe(s) {
   return String(s || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
+function stripMentions(content) {
+  return (content || '')
+    .replace(/<@!?[^>]*>\s*/g, '')
+    .replace(/^@[^\s]+\s*/, '')
+    .trim();
+}
+
 function isBotMentioned(msg, appId) {
   if (msg.rawEventType === 'GROUP_AT_MESSAGE_CREATE') return true;
   if (Array.isArray(msg.mentions) && msg.mentions.some((m) => m && m.is_you === true)) return true;
   if (appId && new RegExp(`<@!?${escapeRe(appId)}>`).test(msg.content || '')) return true;
   return false;
+}
+
+function isMentionish(msg) {
+  if (msg.rawEventType === 'GROUP_AT_MESSAGE_CREATE') return true;
+  if (Array.isArray(msg.mentions) && msg.mentions.length > 0) return true;
+  return /<@|^@/.test(msg.content || '');
 }
 
 async function safeReply(bot, msg, content) {
@@ -24,7 +37,12 @@ export function createHandler(bot) {
   return async function handleMessage(_ctx, msg) {
     try {
       const rawContent = msg.content || '';
-      const cleaned = rawContent.replace(/<@!?\d+>\s*/g, '').trim();
+      if (isMentionish(msg)) {
+        console.log(
+          `[msg] ${msg.kind} raw=${msg.rawEventType} mentions=${JSON.stringify(msg.mentions)} content="${rawContent}"`,
+        );
+      }
+      const cleaned = stripMentions(rawContent);
       const mentioned = isBotMentioned(msg, bot.appId);
 
       const stripped = stripPrefix(cleaned);

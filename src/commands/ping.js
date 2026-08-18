@@ -25,8 +25,8 @@ export const ping = {
   description: '连接状态/运行时间',
   async execute({ reply }) {
     const lines = [
-      `状态：${status.connected ? '在线' : '连接中'}`,
-      `时间：${formatTime()}`,
+      `${formatTime()}`,
+      `状态：${status.connected ? "在线" : "连接中"}`,
       `已运行：${formatDuration(Math.floor((Date.now() - status.startedAt) / 1000))}`,
     ];
     await reply(lines.join('\n'));
