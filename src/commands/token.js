@@ -43,28 +43,25 @@ function buildMarkdown(data) {
     `# Token 用量 · ${user.username || 'tiouoo'}`,
     '',
     '**总量**',
-    `> ${formatTokens(stats.totalTokens)} tokens · ${formatCost(stats.totalCost)}`,
+    `${formatTokens(stats.totalTokens)} tokens · ${formatCost(stats.totalCost)}`,
     '',
     `**今日 (${today})**`,
-    `> ${todayLine}`,
-    '',
-    '**排名**',
-    `> #${user.rank ?? '?'}`,
+    todayLine,
     '',
     '**构成**',
-    `> 输入 ${formatTokens(stats.inputTokens)} · 输出 ${formatTokens(stats.outputTokens)}`,
-    `> 缓存读 ${formatTokens(stats.cacheReadTokens)} · 缓存写 ${formatTokens(stats.cacheWriteTokens)} · 推理 ${formatTokens(stats.reasoningTokens)}`,
+    `输入 ${formatTokens(stats.inputTokens)} · 输出 ${formatTokens(stats.outputTokens)}`,
+    `缓存读 ${formatTokens(stats.cacheReadTokens)} · 缓存写 ${formatTokens(stats.cacheWriteTokens)} · 推理 ${formatTokens(stats.reasoningTokens)}`,
     '',
     '**活跃**',
-    `> ${stats.activeDays ?? 0} 天 · ${stats.sessionCount ?? 0} 会话 · ${stats.submissionCount ?? 0} 次上报`,
+    `${stats.activeDays ?? 0} 天 · ${stats.sessionCount ?? 0} 会话 · ${stats.submissionCount ?? 0} 次上报`,
     '',
   ];
   if (topModels) {
-    lines.push('**Top 模型**', `> ${topModels}`, '');
+    lines.push('**Top 模型**', topModels, '');
   }
   if (lastC) {
-    lines.push(`**最近记录 (${lastC.date})**`, `> ${formatTokens(lastC.totals?.tokens)} tokens · ${formatCost(lastC.totals?.cost)}`, '');
+    lines.push(`**最近记录 (${lastC.date})**`, `${formatTokens(lastC.totals?.tokens)} tokens · ${formatCost(lastC.totals?.cost)}`, '');
   }
-  lines.push('**数据更新**', `> ${formatDateCN(data.updatedAt)}`);
+  lines.push('**数据更新**', formatDateCN(data.updatedAt));
   return lines.join('\n');
 }

@@ -8,7 +8,7 @@ export const help = {
       '',
       ...visible.flatMap((cmd) => {
         const name = `${cmd.names.join(' / ')}`;
-        return cmd.description ? [name, `> ${cmd.description}`, ''] : [name, ''];
+        return cmd.description ? [name, cmd.description, ''] : [name, ''];
       }),
       '提示：可用 . / 。 \\ 触发命令，如 /help'
     ];
