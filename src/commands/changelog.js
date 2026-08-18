@@ -45,7 +45,7 @@ function parseArgs(args) {
 
 function buildSingle(release, limit) {
   const lines = [
-    `# [${release.title}](${release.url.replace("https://cnb.cool/tiouo/portal/-/tags/", "https://cnb.cool/tiouo/portal/-/tag/")})`,
+    `# [${release.title}](${release.url.replace("https://cnb.cool/tiouo/portal/-/tags/", "https://cnb.cool/tiouo/portal/-/releases/tag/")})`,
     "",
     `**通道**：${SOURCE_LABEL[release.source]} ${CHANNEL_LABEL[release.channel]}`,
     `**时间**：${formatDate(release.publishedAt, true)}`,
