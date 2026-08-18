@@ -1,5 +1,6 @@
 import { dispatch, showHelp } from './commands/index.js';
 import { stripPrefix } from './prefix.js';
+import { isAdminSender } from './admin.js';
 
 function escapeRe(s) {
   return String(s || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -37,9 +38,10 @@ export function createHandler(bot) {
   return async function handleMessage(_ctx, msg) {
     try {
       const rawContent = msg.content || '';
-      if (isMentionish(msg)) {
+      const mentionish = isMentionish(msg);
+      if (mentionish || msg.kind === 'c2c') {
         console.log(
-          `[msg] ${msg.kind} raw=${msg.rawEventType} mentions=${JSON.stringify(msg.mentions)} content="${rawContent}"`,
+          `[msg] ${msg.kind} sender=${msg.senderId} raw=${msg.rawEventType} mentions=${JSON.stringify(msg.mentions)} content="${rawContent}"`,
         );
       }
       const cleaned = stripMentions(rawContent);
@@ -56,8 +58,10 @@ export function createHandler(bot) {
           if (!text) return showHelp(bot, msg);
           return dispatch(bot, msg, text);
         }
-        // 未 @ 机器人：只有带前缀且后面有指令内容才响应
+        // 未 @ 机器人：带前缀或有指令才响应
         if (hasPrefix && text) return dispatch(bot, msg, text);
+        // 管理员无需 @ / 前缀即可触发指令
+        if (isAdminSender(msg) && text) return dispatch(bot, msg, text);
         // 既没 @ 也没触发指令：保持沉默
         return;
       }

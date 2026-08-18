@@ -16,4 +16,9 @@ export const config = {
     .split(',')
     .map((s) => stripQuotes(s))
     .filter(Boolean),
+  adminQq: stripQuotes(process.env.ADMIN_QQ) || '',
+  adminOpenids: (process.env.ADMIN_OPENID || '')
+    .split(',')
+    .map((s) => stripQuotes(s))
+    .filter(Boolean),
 };

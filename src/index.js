@@ -8,6 +8,13 @@ if (!config.appId || !config.appSecret) {
   process.exit(1);
 }
 
+if (config.adminQq && !config.adminOpenids.length) {
+  console.warn(
+    `[bot] ADMIN_QQ=${config.adminQq} 已设置，但 ADMIN_OPENID 为空。` +
+      'QQ 平台事件只携带 openid 而非 QQ 号，请发一条消息后从日志的 [msg] sender= 中复制你的 openid 填入 .env',
+  );
+}
+
 const logger = {
   info: (...args) => console.log('[bot]', ...args),
   error: (...args) => console.error('[bot]', ...args),
