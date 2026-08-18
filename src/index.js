@@ -2,6 +2,7 @@ import { QQBot, messageFilter } from '@tencent-connect/qqbot-nodejs';
 import { config } from './config.js';
 import { createHandler } from './handler.js';
 import { status } from './status.js';
+import { syncPanels } from './panel.js';
 
 if (!config.appId || !config.appSecret) {
   console.error('[bot] 缺少 APP_ID / APP_SECRET，请检查 .env 文件');
@@ -63,6 +64,13 @@ bot.on('interaction', async (_ctx, event) => {
 const ac = new AbortController();
 process.on('SIGINT', () => ac.abort());
 process.on('SIGTERM', () => ac.abort());
+
+// 启动时同步云端指令面板配置（失败不阻塞启动）
+try {
+  await syncPanels(bot, logger);
+} catch (err) {
+  logger.warn('指令面板同步失败：', err.message || err);
+}
 
 try {
   await bot.start(ac.signal);

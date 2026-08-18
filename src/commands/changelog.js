@@ -4,8 +4,8 @@ const CHANNEL_LABEL = { release: '正式版', nightly: 'nightly', commit: 'commi
 const SOURCE_LABEL = { cnb: 'cnb', gh: 'github' };
 
 export const changelog = {
-  names: ['changelog', '更新日志'],
-  description: '获取更新日志',
+  names: ["log", "更新日志"],
+  description: "获取更新日志",
   async execute({ reply, replyMarkdown, args }) {
     try {
       const { source, channel } = parseArgs(args || []);
