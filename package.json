@@ -8,8 +8,7 @@
   },
   "scripts": {
     "start": "node src/index.js",
-    "dev": "node --watch src/index.js",
-    "panel": "node scripts/setup-panels.js"
+    "dev": "node --watch src/index.js"
   },
   "dependencies": {
     "@tencent-connect/qqbot-nodejs": "^1.0.4",
