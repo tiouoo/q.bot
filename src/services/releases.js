@@ -76,12 +76,6 @@ export async function getRelease(source, channel) {
   return toRelease(rel, src, ch);
 }
 
-export async function listReleases(source) {
-  const src = normalizeSource(source) || 'cnb';
-  const list = src === 'cnb' ? await cnbGet(CNB_LIST_URL) : await ghGet(GH_LIST_URL);
-  return (list || []).map((r) => toRelease(r, src, 'release'));
-}
-
 function latestStable(releases) {
   const list = (releases || [])
     .filter((r) => r && r.draft !== true && r.prerelease !== true)
@@ -115,7 +109,7 @@ function toRelease(rel, source, channel) {
     title: String(rel.name || rel.tag_name || '').trim(),
     tagName: String(rel.tag_name || ''),
     url: source === 'cnb'
-      ? `https://cnb.cool/${CNB_REPO}/-/releases/tags/${encodeURIComponent(String(rel.tag_name || ''))}`
+      ? `https://cnb.cool/${CNB_REPO}/-/tags/${encodeURIComponent(String(rel.tag_name || ''))}`
       : `https://github.com/${GH_REPO}/releases/tag/${encodeURIComponent(String(rel.tag_name || ''))}`,
     publishedAt: rel.published_at || rel.created_at || null,
     body: String(rel.body || '').trim(),
